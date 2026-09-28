@@ -9,30 +9,30 @@ In high-throughput microservice architectures, naive request routing leads to ca
 
 ```mermaid
 graph TD
-    Client[Client] -->|GET /orders/42| Router[Smart Router (Go)]
+    Client["Client"] -->|"GET /orders/42"| Router["Smart Router (Go)"]
     
     subgraph Multi-Level Cache
-        Router -->|1. Check| L1[L1 Cache: In-Memory]
-        L1 -. miss .-> L2[L2 Cache: Redis]
-        L2 -. miss .-> L3[L3 Cache: PostgreSQL]
+        Router -->|"1. Check"| L1["L1 Cache: In-Memory"]
+        L1 -. miss .-> L2["L2 Cache: Redis"]
+        L2 -. miss .-> L3["L3 Cache: PostgreSQL"]
     end
     
     subgraph Backend Services
-        Router -->|2. Route| BoundedQueue[Bounded Queue / Worker Pool]
-        BoundedQueue --> SA[Service A]
-        BoundedQueue --> SB[Service B]
-        BoundedQueue --> SC[Service C]
+        Router -->|"2. Route"| BoundedQueue["Bounded Queue / Worker Pool"]
+        BoundedQueue --> SA["Service A"]
+        BoundedQueue --> SB["Service B"]
+        BoundedQueue --> SC["Service C"]
     end
 
     subgraph Failure Mitigation
-        SA -. Timeout .-> CB[Circuit Breaker]
+        SA -. Timeout .-> CB["Circuit Breaker"]
         CB -. OPEN .-> Router
     end
     
     subgraph Observability
-        SA -->|Events| Kafka[Kafka]
-        Kafka --> Workers[Background Workers]
-        Metrics[Metrics / AI Analyzer] -. Monitor .-> Router
+        SA -->|"Events"| Kafka["Kafka"]
+        Kafka --> Workers["Background Workers"]
+        Metrics["Metrics / AI Analyzer"] -. Monitor .-> Router
     end
 ```
 
