@@ -1,0 +1,11 @@
+[package]
+name = "routing-engine"
+version = "0.1.0"
+edition = "2021"
+description = "Performance-critical adaptive routing engine"
+
+[dependencies]
+libc = "0.2"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
